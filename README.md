@@ -27,6 +27,9 @@ Planned Outputs:
 ## Data Sources
 - **Cosmetic Ingredients Dataset**  
   ~1,500 skincare products including ingredient lists, product categories, and labeled skin types (dry, oily, combination, etc.)
+  https://www.kaggle.com/code/kingabzpro/cosmetics-ingredients
+  https://www.kaggle.com/datasets/autumndyer/skincare-products-and-ingredients
 
 - **Skincare Product Reviews Dataset**  
   2,000+ products with user reviews and ratings providing real-world feedback on product performance
+  https://www.kaggle.com/code/natashamessier/sephora-data-analysis/input
