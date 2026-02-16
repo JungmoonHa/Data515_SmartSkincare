@@ -1,39 +1,119 @@
-# Component Spec — Smart Skincare
+# Component Specification - Smart Skincare
 
-## 1. Skin type / profile input
+## Component 1: Skin Type / User Profile Input
 
-We need a single place that turns “how’s your skin” into the 6 weights we use everywhere: dry, normal, oily, pigmentation, sensitive, wrinkle. That’s `user_input_to_profile` in recommend_mvp (and the CLI in run_recommendation.py just calls it).
-
-You pass in: hydration (low/normal/high), oil level, sensitivity, age if you have it (35+ bumps wrinkle), and optionally a list of concerns like dryness or pigmentation. Out comes a dict with those 6 keys and floats 0–1; anything you didn’t set is 0. We assume the caller stays within the allowed choices and doesn’t add extra keys.
-
----
-
-## 2. Products and ingredients data
-
-Everything that “loads the world” lives around recommend_mvp: cosmetics.csv → parsed product list (id, name, brand, ingredients list, rating), ingredient_skin_map.json → skin_map (ingredient → skin_types, effect, confidence), and optionally Paula CSV and product_knn_topk.json. The Ingredients column is expected to be a normal comma-separated string we can parse; if an ingredient isn’t in the map we fall back to family-based rules.
-
----
-
-## 3. Recommendation / scoring
-
-`get_top_products(profile, n, max_products)` is the main entry. It scores each product: good ingredients add (profile weight × type × tier × confidence), avoid ingredients subtract, Paula “poor” subtracts a bit more. If we have the KNN cache we add a similarity term so base_score + SIM_WEIGHT * sim_score gives the final score.
-
-Return shape: list of dicts. Each has `product`, `score`, `base_score`, `sim_score`, `key_ingredients`, `key_by_type`, `active_wrinkle_hits`, and `avoid_ingredients` — that last one is a list of (ingredient_name, reason) like ("linalool", "sensitive"), or empty. No cache → sim_score is just 0; everything else still works.
+* **Name:** SkinTypeInput (user_input_to_profile)
+* **What it does:**
+  * Converts user skin type and concerns into 6-type weights (dry, normal, oily, pigmentation, sensitive, wrinkle).
+  * Callable from CLI (`run_recommendation.py`) or from code.
+* **Inputs:**
+  * `hydration_level` (str): "low" | "normal" | "high" - hydration level.
+  * `oil_level` (str): "low" | "normal" | "high" - oil level.
+  * `sensitivity` (str): "low" | "normal" | "high" - sensitivity.
+  * `age` (int, optional): Age. Values such as 35+ adjust wrinkle weight.
+  * `concerns` (list, optional): Additional concerns, e.g. ["dryness", "wrinkles", "pigmentation"].
+* **Outputs (with type information):**
+  * `user_profile` (dict): `{ "dry": float, "normal": float, "oily": float, "pigmentation": float, "sensitive": float, "wrinkle": float }` - weight per type (0-1). Unspecified types are 0.
+* **Assumptions:**
+  * Input values are within the defined choices.
+  * Profile contains only the normalized 6-type keys.
 
 ---
 
-## 4. Building the ingredient–skin map
+## Component 2: Cosmetic Products & Ingredients Data Interface
 
-`build_ingredient_skin_map.py` glues ingredient_6types.json and manual_curation.csv into one ingredient_skin_map.json. Curation wins when both exist: effect (good/avoid/neutral) and confidence (high/medium/low). Skin types stay in the fixed six; we don’t invent new ones.
+* **Name:** ProductIngredientData (load_products_with_ingredients, load_ingredient_skin_map, etc.)
+* **What it does:**
+  * Reads the product list (cosmetics.csv), parses and normalizes ingredient strings, and provides a per-product ingredient list.
+  * Loads the ingredient-to-skin type / effect / confidence map (ingredient_skin_map.json).
+  * Optionally loads Paula rating CSV and KNN similarity cache (product_knn_topk.json).
+* **Inputs (data sources):**
+  * `cosmetics.csv`: Brand, Name, Ingredients (comma-separated string), Rating, etc.
+  * `ingredient_skin_map.json`: ingredient name to `{ skin_types, effect, confidence }`.
+  * `Paula_SUM_LIST.csv` (or same format): ingredient ratings (canonical name, rating, etc.).
+  * `product_knn_topk.json` (optional): per-product KNN neighbor list - used for similarity-based score adjustment.
+* **Outputs (in-memory):**
+  * Product list: each item `{ id, name, brand, ingredients: list[str], rating, ... }`.
+  * `skin_map`: dict - ingredient to `{ skin_types, effect, confidence }`.
+  * (optional) KNN cache dict.
+* **Assumptions:**
+  * The Ingredients column in cosmetics.csv is a parseable string.
+  * Ingredients not in ingredient_skin_map can be handled via family-based fallback.
 
 ---
 
-## 5. KNN cache
+## Component 3: Recommendation / Scoring Engine
 
-`build_vector_cache.py` uses the same product/ingredient loading as recommend_mvp, turns ingredient lists into a binary matrix (MultiLabelBinarizer), runs KNN with cosine distance, and dumps product_knn_topk.json. That file is optional — if it’s there we use it for sim_score; if not we skip it. Needs scikit-learn.
+* **Name:** RecommendationEngine (get_top_products)
+* **What it does:**
+  * Scores each product using user profile (6-type weights), product ingredient lists, and the ingredient map.
+  * Good ingredients add score by profile weight x type x tier (active/base/other) x confidence; avoid adds penalty; Paula "poor" adds extra penalty.
+  * When cache exists: final score = base_score + SIM_WEIGHT * similarity_score.
+  * Returns top N products with type-specific key drivers and avoid/watch ingredients (including where they are bad).
+* **Inputs:**
+  * `user_profile` (dict): 6-type weights.
+  * `n` (int): Number of recommendations (default 10).
+  * `max_products` (int): Maximum number of products to score (default 5000).
+* **Outputs (with type information):**
+  * `list[dict]`: each item -
+    * `product` (dict): Product info (id, name, brand, ingredients, rating, etc.).
+    * `score` (float): Final score.
+    * `base_score` (float): Ingredient-based score.
+    * `sim_score` (float): KNN similarity contribution (0 if cache is missing).
+    * `key_ingredients` (list[str]): Core ingredient names for explanation.
+    * `key_by_type` (dict): Driver ingredients per type.
+    * `active_wrinkle_hits` (list): Wrinkle-related active ingredient hits.
+    * `avoid_ingredients` (list[(str, str)]): (ingredient name, reason e.g. "sensitive" or "oily, sensitive") - empty list if none.
+* **Assumptions:**
+  * ingredient_skin_map and product data are loadable.
+  * Engine works without KNN cache; in that case sim_score is 0.
 
 ---
 
-## How it fits together
+## Component 4: Ingredient-Skin Map Builder
 
-Offline you run the map builder (and optionally the KNN cache). At runtime: user input → profile dict → load products + skin map (and cache if present) → get_top_products → top N with key ingredients, drivers per type, and avoid/watch with reasons (or “no avoid ingredient” when the list is empty).
+* **Name:** IngredientSkinMapBuilder (build_ingredient_skin_map)
+* **What it does:**
+  * Merges ingredient_6types.json (ingredient-to-6-type list) with manual curation (manual_curation.csv) to produce ingredient_skin_map.json.
+  * Manual curation effect (good/avoid/neutral) and confidence (high/medium/low) take precedence.
+* **Inputs:**
+  * `ingredient_6types.json`: ingredient to list of skin_types (default effect good, confidence medium).
+  * `manual_curation.csv`: ingredient, skin_type (comma-separated), effect, confidence.
+* **Outputs:**
+  * `ingredient_skin_map.json`: ingredient to `{ skin_types: list, effect: str, confidence: str }`.
+* **Assumptions:**
+  * skin_type values are limited to the fixed 6 types (dry, normal, oily, pigmentation, sensitive, wrinkle).
+  * effect is good | avoid | neutral; confidence is high | medium | low.
+
+---
+
+## Component 5: KNN Similarity Cache Builder
+
+* **Name:** ProductKNNCacheBuilder (build_vector_cache)
+* **What it does:**
+  * Vectorizes per-product ingredient lists with MultiLabelBinarizer, then computes KNN neighbors by cosine distance and writes product_knn_topk.json.
+  * Used by the recommendation engine to compute similarity-based score adjustment (sim_score).
+* **Inputs:**
+  * Product and ingredient data: list loaded via recommend_mvp.load_products_with_ingredients().
+* **Outputs:**
+  * `product_knn_topk.json`: `{ product_id: [[neighbor_id, similarity], ...], ... }`.
+* **Assumptions:**
+  * Ingredient lists are produced with the same parsing logic as recommend_mvp.
+  * scikit-learn (NearestNeighbors, MultiLabelBinarizer) is available.
+
+---
+
+## Sequence Diagram (Overall Flow)
+
+1. **Data preparation (offline)**
+   IngredientSkinMapBuilder to ingredient_skin_map.json
+   (optional) ProductKNNCacheBuilder to product_knn_topk.json
+
+2. **User input**
+   SkinTypeInput (CLI or API) to user_profile
+
+3. **Recommendation run**
+   Load ProductIngredientData, then RecommendationEngine(user_profile, n, max_products) to Top N list plus key_ingredients, key_by_type, avoid_ingredients (including where each is bad)
+
+4. **Output**
+   Per product: score, drivers by type, Avoid / Watch: ingredient (reason) or "no avoid ingredient"
