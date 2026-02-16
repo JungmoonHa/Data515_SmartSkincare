@@ -90,5 +90,3 @@ The system uses a structured skincare product database that includes:
 8. **System:** Explains why one product is recommended (based on the ingredient scoring rules/model).  
 
 ---
-
-## Component Specification
