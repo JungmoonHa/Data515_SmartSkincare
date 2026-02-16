@@ -44,10 +44,10 @@ This dataset contains ingredient information collected from Paula’s Choice pro
 ### Kaggle - [Skincare products and ingredients (Sephora)](https://www.kaggle.com/datasets/autumndyer/skincare-products-and-ingredients): 
 Collected from the Sephora website, this dataset includes product-level information such as brand details and ingredient lists. It is used to analyze commercially available skincare products and to support ingredient-based comparisons across brands.
 
-### [Incidecoder](https://incidecoder.com)
+### [Incidecoder](https://incidecoder.com):
 INCIDecoder is used to supplement missing or incomplete ingredient specifications. By referencing its ingredient descriptions and functional annotations, we improve ingredient interpretability and consistency across datasets.
 
-### Additional Consideratioin
+### Additional Consideration
 To further improve the scoring algorithm, we consider incorporating user review data and ingredient percentage information, allowing for a more refined and realistic evaluation of product formulations.
 
 ## Use Cases
