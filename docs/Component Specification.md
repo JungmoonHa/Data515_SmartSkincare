@@ -26,19 +26,22 @@
 * **What it does:**
   * Reads the product list (cosmetics.csv), parses and normalizes ingredient strings, and provides a per-product ingredient list.
   * Loads the ingredient-to-skin type / effect / confidence map (ingredient_skin_map.json).
-  * Optionally loads Paula rating CSV and KNN similarity cache (product_knn_topk.json).
+  * Optionally loads Paula rating CSV, KNN similarity cache (product_knn_topk.json), and review stats cache (review_stats.json).
 * **Inputs (data sources):**
   * `cosmetics.csv`: Brand, Name, Ingredients (comma-separated string), Rating, etc.
   * `ingredient_skin_map.json`: ingredient name to `{ skin_types, effect, confidence }`.
   * `Paula_SUM_LIST.csv` (or same format): ingredient ratings (canonical name, rating, etc.).
   * `product_knn_topk.json` (optional): per-product KNN neighbor list - used for similarity-based score adjustment.
+  * `review_stats.json` (optional): per-product review stats (avg, count, recentness, review_score) - used for review-based quality signal.
 * **Outputs (in-memory):**
   * Product list: each item `{ id, name, brand, ingredients: list[str], rating, ... }`.
   * `skin_map`: dict - ingredient to `{ skin_types, effect, confidence }`.
   * (optional) KNN cache dict.
+  * (optional) Review stats dict (key = normalized "Brand + Name").
 * **Assumptions:**
   * The Ingredients column in cosmetics.csv is a parseable string.
   * Ingredients not in ingredient_skin_map can be handled via family-based fallback.
+  * Review stats are joined by normalizing "Brand + Name" and exact match with cache keys; no match yields review_score 0.
 
 ---
 
@@ -47,9 +50,9 @@
 * **Name:** RecommendationEngine (get_top_products)
 * **What it does:**
   * Scores each product using user profile (6-type weights), product ingredient lists, and the ingredient map.
-  * Good ingredients add score by profile weight x type x tier (active/base/other) x confidence; avoid adds penalty; Paula "poor" adds extra penalty.
-  * When cache exists: final score = base_score + SIM_WEIGHT * similarity_score.
-  * Returns top N products with type-specific key drivers and avoid/watch ingredients (including where they are bad).
+  * **Base score:** Good ingredients add by profile weight x type x tier (active/base/other) x confidence; avoid adds penalty; Paula "poor" adds extra penalty. **INCI order-based strength bonus:** For types that matter (top 2 by profile weight), ingredients in allowed families (e.g. oily: aha_bha, sebum_control; wrinkle: retinoid, peptide, aha_bha, antioxidant; dry: humectant, barrier) get a small bonus added to the type bucket by position: index 0-4 = high, 5-14 = medium, 15+ = low. Tokens that fail _should_drop_ingredient_token are excluded from this bonus.
+  * **Final score:** base_score + SIM_WEIGHT * sim_score + REVIEW_WEIGHT * review_score. sim_score from KNN cache (anchor = top base_score products); review_score from review_stats cache (exact match on normalized Brand + Name). Missing caches contribute 0.
+  * Returns top N products with type-specific key drivers (top_types k=6, min_w=0.1) and avoid/watch ingredients with reason (skin_types); if no avoid ingredients, output "Avoid ingredients not found".
 * **Inputs:**
   * `user_profile` (dict): 6-type weights.
   * `n` (int): Number of recommendations (default 10).
@@ -57,16 +60,17 @@
 * **Outputs (with type information):**
   * `list[dict]`: each item -
     * `product` (dict): Product info (id, name, brand, ingredients, rating, etc.).
-    * `score` (float): Final score.
-    * `base_score` (float): Ingredient-based score.
-    * `sim_score` (float): KNN similarity contribution (0 if cache is missing).
+    * `score` (float): Final score (base + SIM_WEIGHT*sim + REVIEW_WEIGHT*review).
+    * `base_score` (float): Ingredient-based score including INCI strength bonus.
+    * `sim_score` (float): KNN similarity contribution (0 if cache missing).
+    * `review_score` (float): Review-based quality contribution (0 if cache missing or no match).
     * `key_ingredients` (list[str]): Core ingredient names for explanation.
-    * `key_by_type` (dict): Driver ingredients per type.
+    * `key_by_type` (dict): Driver ingredients per type (TYPE_FAMILY_ALLOW).
     * `active_wrinkle_hits` (list): Wrinkle-related active ingredient hits.
     * `avoid_ingredients` (list[(str, str)]): (ingredient name, reason e.g. "sensitive" or "oily, sensitive") - empty list if none.
 * **Assumptions:**
   * ingredient_skin_map and product data are loadable.
-  * Engine works without KNN cache; in that case sim_score is 0.
+  * Engine works without KNN or review cache; missing caches contribute 0 to final score.
 
 ---
 
@@ -103,17 +107,32 @@
 
 ---
 
+## Component 6: Review Stats Cache Builder
+
+* **Name:** ReviewStatsCacheBuilder (build_review_stats_cache)
+* **What it does:**
+  * Reads review_data.csv (item_reviewed, rating_value, best_rating, date_published), aggregates per normalized product name (item_reviewed), computes avg = mean(rating_value/best_rating), count, recentness = exp(-days_since_last/180), and review_score = avg * log1p(count) * recentness. Writes review_stats.json. Matching to cosmetics at recommendation time is by normalizing "Brand + Name" and exact lookup; no fuzzy matching.
+* **Inputs:**
+  * `review_data.csv`: item_reviewed, rating_value, best_rating, date_published.
+* **Outputs:**
+  * `review_stats.json`: `{ normalized_product_name: { avg, count, recentness, review_score }, ... }`.
+* **Assumptions:**
+  * best_rating > 0 (default 5 if missing). Unmatched products at recommendation time get review_score 0.
+
+---
+
 ## Sequence Diagram (Overall Flow)
 
 1. **Data preparation (offline)**
-   IngredientSkinMapBuilder to ingredient_skin_map.json
-   (optional) ProductKNNCacheBuilder to product_knn_topk.json
+   * IngredientSkinMapBuilder to ingredient_skin_map.json
+   * (optional) ProductKNNCacheBuilder to product_knn_topk.json
+   * (optional) ReviewStatsCacheBuilder to review_stats.json
 
 2. **User input**
-   SkinTypeInput (CLI or API) to user_profile
+   * SkinTypeInput (CLI or API) to user_profile
 
 3. **Recommendation run**
-   Load ProductIngredientData, then RecommendationEngine(user_profile, n, max_products) to Top N list plus key_ingredients, key_by_type, avoid_ingredients (including where each is bad)
+   * Load ProductIngredientData (products, skin_map, optional KNN cache, optional review stats). RecommendationEngine(user_profile, n, max_products): base_score (ingredient map + family fallback + Paula poor + rating + INCI strength bonus), then final_score = base_score + SIM_WEIGHT*sim_score + REVIEW_WEIGHT*review_score. Returns Top N with key_ingredients, key_by_type, avoid_ingredients (with reason).
 
 4. **Output**
-   Per product: score, drivers by type, Avoid / Watch: ingredient (reason) or "no avoid ingredient"
+   * Per product: score, drivers by type, Avoid / Watch: ingredient (reason) or "Avoid ingredients not found"
