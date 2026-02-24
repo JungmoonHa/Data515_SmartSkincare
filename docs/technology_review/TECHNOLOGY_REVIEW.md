@@ -1,7 +1,7 @@
 # Technology Review: Web Scraping for Product Image Fetching
 
 **Smart Skincare Project**  
-DATA 515 - Software Design for Data Scientists  
+DATA 515 — Software Design for Data Scientists  
 Technology Review Assignment
 
 ---
@@ -14,13 +14,13 @@ Smart Skincare is a cosmetics recommendation system that suggests products based
 
 During development, we faced three main technology choices:
 
-1. **Ingredient data source** - Where to get detailed ingredient information (skin-type fit, effects, synonyms)  
+1. **Ingredient data source** — Where to get detailed ingredient information (skin-type fit, effects, synonyms)  
    - *Decision:* Paula CSV + PubChem API (urllib) + INCI Decoder (urllib scraping) + manual curation. No dedicated scraping library; standard library only.
 
-2. **Product image fetching** - How to obtain product images for the recommendation UI  
+2. **Product image fetching** — How to obtain product images for the recommendation UI  
    - *Decision:* Serper API (search) + HTTP client + HTML parsing to extract `og:image`. **This review focuses on this choice.**
 
-3. **Recommendation algorithm** - How to score and rank products  
+3. **Recommendation algorithm** — How to score and rank products  
    - *Decision:* Custom scoring logic (profile weights × ingredient map × Paula rating × INCI order bonus). No external library used; excluded from this review.
 
 ### 1.2 Technology Need
@@ -33,8 +33,8 @@ Our product data (`cosmetics.csv`, `Sephora_all_423.csv`) includes brand, name, 
 
 This requires:
 
-- **HTTP client** - To call search APIs and fetch web pages
-- **HTML parsing** - To extract `og:image` or other image URLs from HTML (regex or parser)
+- **HTTP client** — To call search APIs and fetch web pages
+- **HTML parsing** — To extract `og:image` or other image URLs from HTML (regex or parser)
 
 We need a Python library (or combination) that:
 
