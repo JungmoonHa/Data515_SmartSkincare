@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Skincare — Ingredient-based recommendations</title>
+  <style>
+    :root {
+      --primary: #00b894;
+      --primary-dark: #00a085;
+      --bg: #f8f9fa;
+      --card-bg: #fff;
+      --text: #2d3436;
+      --text-muted: #636e72;
+      --border: #dfe6e9;
+      --good: #00b894;
+      --warn: #fdcb6e;
+      --avoid: #e17055;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--card-bg);
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .header p {
+      margin: 0.25rem 0 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    .panel {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+    .panel h2 {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .concerns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .concern-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s, border-color .15s;
+    }
+    .concern-chip:hover { border-color: var(--primary); }
+    .concern-chip.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .concern-chip .level-tag { font-size: 0.75em; opacity: 0.9; }
+    .age-row {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .age-row label { font-size: 0.9rem; }
+    .age-row input {
+      width: 4rem;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      transition: background .15s;
+    }
+    .btn:hover { background: var(--primary-dark); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .results-header h2 { margin: 0; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      border: 1px solid var(--border);
+      transition: box-shadow .15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+    .card-image-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--border);
+      margin-bottom: 0.75rem;
+      flex-shrink: 0;
+    }
+    .card-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .card-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    .card-brand {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.2rem;
+    }
+    .card-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .card-score-breakdown {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .card-score-breakdown span { margin-right: 0.5rem; }
+    .card-rating {
+      color: var(--warn);
+      font-weight: 600;
+    }
+    .card-score {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .key-ing-item { display: block; margin-bottom: 0.25rem; }
+    .key-ing-item .why { color: var(--text-muted); font-size: 0.85em; }
+    .avoid-item { display: block; margin-bottom: 0.25rem; }
+    .avoid-item .why { color: var(--text-muted); font-size: 0.85em; }
+    .card-section {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .card-section strong { color: var(--text-muted); display: block; margin-bottom: 0.25rem; }
+    .key-ing {
+      color: var(--good);
+    }
+    .avoid-ing { color: var(--avoid); }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+    .error {
+      background: #ffeaea;
+      color: #c0392b;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .empty {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Smart Skincare</h1>
+    <p>Get product recommendations based on ingredients for your skin concerns</p>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2>Select skin concerns</h2>
+      <p class="panel-hint" style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 0.75rem;">Click to cycle: Off → Low (0.2) → Medium (0.5) → High (0.9). Wrinkle is set by age below.</p>
+      <div class="concerns" id="concerns">
+        <span class="concern-chip concern-normal" data-type="normal" data-level="0">Normal</span>
+        <span class="concern-chip concern-level" data-type="dry" data-level="0">Dry</span>
+        <span class="concern-chip concern-level" data-type="oily" data-level="0">Oily</span>
+        <span class="concern-chip concern-level" data-type="pigmentation" data-level="0">Pigmentation</span>
+        <span class="concern-chip concern-level" data-type="sensitive" data-level="0">Sensitive</span>
+      </div>
+      <div class="age-row">
+        <label for="age">Age (wrinkle weight: 30+ → 0.6, 40+ → 0.7, 50+ → 0.8, 60+ → 0.9)</label>
+        <input type="number" id="age" min="1" max="99" placeholder="e.g. 40">
+      </div>
+      <p style="margin-top: 1rem;">
+        <button class="btn" id="btnRecommend">Get recommendations</button>
+      </p>
+    </section>
+
+    <section class="panel" id="resultsPanel" style="display: none;">
+      <div class="results-header">
+        <h2 id="resultsTitle">Recommended products</h2>
+        <span id="resultsCount" style="font-size: 0.9rem; color: var(--text-muted);"></span>
+      </div>
+      <div id="results"></div>
+    </section>
+
+    <div id="loading" class="loading" style="display: none;">Loading recommendations…</div>
+    <div id="error" class="error" style="display: none;"></div>
+  </main>
+
+  <script>
+    const concernsEl = document.getElementById('concerns');
+    const ageEl = document.getElementById('age');
+    const btnRecommend = document.getElementById('btnRecommend');
+    const resultsPanel = document.getElementById('resultsPanel');
+    const resultsTitle = document.getElementById('resultsTitle');
+    const resultsCount = document.getElementById('resultsCount');
+    const resultsEl = document.getElementById('results');
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+
+    const LEVELS = [0, 0.2, 0.5, 0.9];
+    const LEVEL_LABELS = { 0: '', 0.2: ' (Low)', 0.5: ' (Medium)', 0.9: ' (High)' };
+    const TYPE_LABELS = { normal: 'Normal', dry: 'Dry', oily: 'Oily', pigmentation: 'Pigmentation', sensitive: 'Sensitive' };
+
+    function getProfile() {
+      const active = { dry: 0, normal: 0, oily: 0, pigmentation: 0, sensitive: 0, wrinkle: 0 };
+      concernsEl.querySelectorAll('.concern-chip.concern-level').forEach(chip => {
+        const t = chip.dataset.type;
+        const level = parseFloat(chip.dataset.level || '0');
+        if (t && active.hasOwnProperty(t)) active[t] = level;
+      });
+      const normalChip = concernsEl.querySelector('.concern-chip[data-type="normal"]');
+      const normalOn = normalChip && normalChip.classList.contains('active');
+      const othersSum = active.dry + active.oily + active.pigmentation + active.sensitive;
+      if (normalOn) active.normal = othersSum === 0 ? 0.9 : 0.6;
+      const age = ageEl.value ? parseInt(ageEl.value, 10) : null;
+      if (age !== null) {
+        if (age >= 60) active.wrinkle = 0.9;
+        else if (age >= 50) active.wrinkle = 0.8;
+        else if (age >= 40) active.wrinkle = 0.7;
+        else if (age >= 30) active.wrinkle = 0.6;
+      }
+      if (Object.values(active).every(v => v === 0)) active.normal = 0.5;
+      return active;
+    }
+
+    concernsEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.concern-chip');
+      if (!chip) return;
+      const type = chip.dataset.type;
+      if (type === 'normal') {
+        chip.classList.toggle('active');
+        return;
+      }
+      if (chip.classList.contains('concern-level')) {
+        const idx = LEVELS.indexOf(parseFloat(chip.dataset.level || '0'));
+        const nextIdx = (idx + 1) % LEVELS.length;
+        const nextLevel = LEVELS[nextIdx];
+        chip.dataset.level = String(nextLevel);
+        chip.classList.toggle('active', nextLevel > 0);
+        chip.textContent = TYPE_LABELS[type] + LEVEL_LABELS[nextLevel];
+      }
+    });
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      loadingEl.style.display = 'none';
+      resultsPanel.style.display = 'none';
+    }
+
+    function renderCard(item) {
+      const p = item.product;
+      const imgUrl = p.image_url || '';
+      const keysWhy = (item.key_ingredients_why || []).slice(0, 3);
+      const keys = keysWhy.length ? keysWhy : (item.key_ingredients || []).slice(0, 3).map(k => [k, '']);
+      const avoid = (item.avoid_ingredients || []).slice(0, 3);
+      const reviewContrib = item.review_contribution != null ? item.review_contribution : 0;
+      const base = item.base_score != null ? item.base_score : item.score;
+      const imageBlock = imgUrl
+        ? `<div class="card-image-wrap"><img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>`
+        : `<div class="card-image-wrap"><div class="card-image-placeholder">No image</div></div>`;
+      return `
+        <div class="card">
+          ${imageBlock}
+          <div class="card-brand">${escapeHtml(p.brand)}</div>
+          <div class="card-name">${escapeHtml(p.name)}</div>
+          <div class="card-meta">
+            <span class="card-rating">★ ${p.rating || '-'}</span>
+            <span class="card-score">Total ${item.score}</span>
+          </div>
+          <div class="card-score-breakdown">
+            <span>Ingredients: ${base}</span>
+            <span>·</span>
+            <span>Review: ${reviewContrib}</span>
+          </div>
+          ${keys.length ? `
+            <div class="card-section">
+              <strong>Key ingredients — why they're good</strong>
+              ${keys.map(([ing, why]) => `
+                <div class="key-ing-item">
+                  <span class="key-ing">${escapeHtml(ing)}</span>
+                  ${why ? `<span class="why"> — good for ${escapeHtml(why)}</span>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          ${avoid.length ? `
+            <div class="card-section">
+              <strong>Watch out — why to avoid</strong>
+              ${avoid.map(([ing, why]) => `
+                <div class="avoid-item">
+                  <span class="avoid-ing">${escapeHtml(ing)}</span>
+                  ${why ? `<span class="why"> — may irritate: ${escapeHtml(why)}</span>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    btnRecommend.addEventListener('click', async () => {
+      errorEl.style.display = 'none';
+      loadingEl.style.display = 'block';
+      resultsPanel.style.display = 'none';
+      const profile = getProfile();
+
+      try {
+        const res = await fetch('/api/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profile, n: 30 })
+        });
+        const data = await res.json();
+        loadingEl.style.display = 'none';
+
+        if (!res.ok) {
+          showError(data.error || 'Could not load recommendations.');
+          return;
+        }
+
+        const items = data.items || [];
+        resultsCount.textContent = items.length + ' products';
+        resultsEl.innerHTML = items.length
+          ? items.map(renderCard).join('')
+          : '<p class="empty">No recommendations for this profile. Try different concerns.</p>';
+        resultsPanel.style.display = 'block';
+      } catch (err) {
+        showError('Connection error: ' + err.message);
+      }
+    });
+
+    // Default recommendations on load (normal profile)
+    (async () => {
+      loadingEl.style.display = 'block';
+      try {
+        const res = await fetch('/api/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profile: { dry: 0, normal: 0.5, oily: 0, pigmentation: 0, sensitive: 0, wrinkle: 0 }, n: 24 })
+        });
+        const data = await res.json();
+        loadingEl.style.display = 'none';
+        if (res.ok && (data.items || []).length) {
+          resultsCount.textContent = data.items.length + ' products (default)';
+          resultsEl.innerHTML = data.items.map(renderCard).join('');
+          resultsPanel.style.display = 'block';
+        }
+      } catch (_) {
+        loadingEl.style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
