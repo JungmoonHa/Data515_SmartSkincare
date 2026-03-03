@@ -11,7 +11,7 @@ import csv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 INGREDIENT_SKIN_MAP_PATH = CACHE_DIR / "ingredient_skin_map.json"
 WITHSEARCH_FILLED_REMAINING_PATH = DATA_DIR / "withSearch_filled_remaining.csv"

@@ -9,7 +9,7 @@ from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 OUTPUT_CSV = DATA_DIR / "top1000_unmatched_for_curation.csv"
 TOP_N = 1000
 

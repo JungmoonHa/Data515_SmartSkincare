@@ -21,7 +21,7 @@ import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 COSMETICS_CSV = DATA_DIR / "cosmetics.csv"
 SEPHORA_CSV = DATA_DIR / "Sephora_all_423.csv"

@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 NEEDS_HUMAN_CSV = DATA_DIR / "needs_human.csv"
 NEEDS_HUMAN_FILTERED_CSV = DATA_DIR / "needs_human_filtered.csv"

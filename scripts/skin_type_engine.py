@@ -11,7 +11,7 @@ from pathlib import Path
 from collections import defaultdict
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 INGREDIENT_6TYPES_PATH = CACHE_DIR / "ingredient_6types.json"  # norm -> [dry, oily, ...] fit types
 

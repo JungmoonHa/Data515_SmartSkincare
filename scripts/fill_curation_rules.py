@@ -14,7 +14,7 @@ from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 MISSING_CSV = DATA_DIR / "missing_ingredients_for_curation.csv"
 FILLED_ROWS_CSV = DATA_DIR / "filled_rows.csv"
 NEEDS_HUMAN_CSV = DATA_DIR / "needs_human.csv"

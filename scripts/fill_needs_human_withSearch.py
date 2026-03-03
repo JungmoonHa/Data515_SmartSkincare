@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 NEEDS_HUMAN_V2 = DATA_DIR / "needs_human_filtered_v2.csv"
 WITHSEARCH_FILLED_V2 = DATA_DIR / "withSearch_filled_v2.csv"
 

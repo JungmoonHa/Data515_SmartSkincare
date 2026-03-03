@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 REVIEW_CSV = DATA_DIR / "review_data.csv"
 OUT_JSON = CACHE_DIR / "review_stats.json"

@@ -13,7 +13,7 @@ from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 
 # ── Category definitions (checked in priority order) ──────────────────────
 # Each entry: (category_name, keywords, exclude_keywords)

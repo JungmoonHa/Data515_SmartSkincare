@@ -11,7 +11,7 @@ import csv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 NEEDS_HUMAN_FILTERED = DATA_DIR / "needs_human_filtered.csv"
 NEEDS_HUMAN_FILTERED_V2 = DATA_DIR / "needs_human_filtered_v2.csv"
 FILLED_LATIN_V2 = DATA_DIR / "filled_latin_v2.csv"

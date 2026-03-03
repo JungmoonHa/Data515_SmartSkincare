@@ -24,7 +24,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 INGREDIENT_SKIN_MAP_PATH = CACHE_DIR / "ingredient_skin_map.json"
 INFERRED_OUTPUT_PATH = CACHE_DIR / "inferred_ingredient_skin_map.json"
