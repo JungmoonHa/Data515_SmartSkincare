@@ -10,6 +10,7 @@ import re
 import json
 from pathlib import Path
 from collections import defaultdict
+from categorize_products import categorize
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
@@ -763,14 +764,17 @@ def _load_cosmetics_only(max_products: int = None):
                 rating = float(row.get("Rating", 0) or 0)
             except Exception:
                 rating = 0
+            prod_name = row.get("Name", "")
+            prod_label = row.get("Label", "")
             p = {
                 "id": str(i + 1),
-                "name": row.get("Name", ""),
+                "name": prod_name,
                 "brand": row.get("Brand", ""),
                 "ingredients": ingredients,
                 "rating": rating,
                 "raw_ingredients": raw_ing[:200],
                 "source": "cosmetics",
+                "category": categorize(prod_name, "", prod_label),
             }
             if no_reason:
                 p["no_ingredients_reason"] = no_reason
@@ -809,15 +813,18 @@ def _load_sephora_only(max_products: int = None, offset_id: int = 0):
                 rating = float(row.get("recommended", 0) or 0)
             except Exception:
                 rating = 0
+            prod_name = (row.get("cosmetic_name") or "").strip()
+            prod_desc = (row.get("What it is") or "").strip()
             p = {
                 "id": str(offset_id + i + 1),
-                "name": (row.get("cosmetic_name") or "").strip(),
+                "name": prod_name,
                 "brand": (row.get("brand_name") or "").strip(),
                 "ingredients": ingredients,
                 "rating": rating,
                 "raw_ingredients": raw_ing[:200],
                 "source": "sephora",
                 "product_url": (row.get("cosmetic_link") or "").strip(),
+                "category": categorize(prod_name, prod_desc, ""),
             }
             if no_reason:
                 p["no_ingredients_reason"] = no_reason
@@ -1027,7 +1034,8 @@ def _print_top(profile_label: str, profile: dict, top: list, n_show: int = 5):
     print(f"Top {n_show} products (scored out of 100):")
     for i, item in enumerate(top[:n_show], 1):
         p = item["product"]
-        line = f"  {i}. [{p['brand']}] {p['name'][:50]}"
+        cat = p.get("category", "Other")
+        line = f"  {i}. [{p['brand']}] {p['name'][:50]}  ({cat})"
         try:
             print(line)
         except UnicodeEncodeError:
