@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 def main():
-    root = Path(__file__).resolve().parent.parent
+    root = Path(__file__).resolve().parent.parent.parent
     cache_dir = root / "cache"
     out_path = cache_dir / "product_knn_topk.json"
 

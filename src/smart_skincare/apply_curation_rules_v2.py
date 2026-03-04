@@ -10,7 +10,7 @@ Then: python fill_needs_human_withSearch.py
 import csv
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 NEEDS_HUMAN_FILTERED = DATA_DIR / "needs_human_filtered.csv"
 NEEDS_HUMAN_FILTERED_V2 = DATA_DIR / "needs_human_filtered_v2.csv"

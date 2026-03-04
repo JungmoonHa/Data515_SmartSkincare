@@ -9,7 +9,7 @@ import csv
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 INPUT_CSV = DATA_DIR / "top1000_unmatched_for_curation.csv"
 OUTPUT_CSV = DATA_DIR / "manual_curation.csv"

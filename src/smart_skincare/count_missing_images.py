@@ -3,7 +3,7 @@ import json
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CACHE_DIR = ROOT / "cache"
 
 def _normalize(s: str) -> str:

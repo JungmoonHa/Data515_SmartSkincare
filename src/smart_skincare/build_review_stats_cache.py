@@ -11,7 +11,7 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 REVIEW_CSV = DATA_DIR / "review_data.csv"

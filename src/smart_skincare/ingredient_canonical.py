@@ -6,7 +6,7 @@ import re
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CACHE_DIR = ROOT / "cache"
 INGREDIENT_ALIAS_PATH = CACHE_DIR / "ingredient_aliases.json"  # variant (norm) -> canonical (norm)
 

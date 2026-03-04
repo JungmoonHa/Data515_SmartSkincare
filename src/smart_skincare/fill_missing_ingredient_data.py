@@ -23,7 +23,7 @@ import json
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 INGREDIENT_SKIN_MAP_PATH = CACHE_DIR / "ingredient_skin_map.json"

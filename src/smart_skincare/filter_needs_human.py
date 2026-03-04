@@ -12,7 +12,7 @@ import csv
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 NEEDS_HUMAN_CSV = DATA_DIR / "needs_human.csv"

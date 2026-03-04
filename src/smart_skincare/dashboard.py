@@ -16,7 +16,7 @@ from flask import Flask, request, jsonify, Response
 from recommend_mvp import user_input_to_profile, get_top_products
 
 app = Flask(__name__)
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CACHE_DIR = ROOT / "cache"
 
 COSMETICS_IMAGES_PATH = CACHE_DIR / "cosmetics_image_urls.json"

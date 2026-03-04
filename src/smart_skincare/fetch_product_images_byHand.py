@@ -20,7 +20,7 @@ import time
 import urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 COSMETICS_CSV = DATA_DIR / "cosmetics.csv"

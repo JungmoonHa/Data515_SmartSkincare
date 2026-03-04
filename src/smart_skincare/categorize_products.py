@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 from collections import Counter
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 
 # ── Category definitions (checked in priority order) ──────────────────────

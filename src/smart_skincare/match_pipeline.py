@@ -25,7 +25,7 @@ try:
 except Exception:
     _HAS_URLLIB = False
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
 CACHE_DIR = ROOT / "cache"
 PUBCHEM_CACHE_PATH = CACHE_DIR / "pubchem_synonyms_cache.json"
