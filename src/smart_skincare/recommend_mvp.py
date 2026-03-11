@@ -18,8 +18,7 @@ CACHE_DIR = ROOT / "cache"
 INGREDIENT_SKIN_MAP_PATH = CACHE_DIR / "ingredient_skin_map.json"
 PAULA_CSV = DATA_DIR / "Paula_embedding_SUMLIST_before_422.csv"
 PAULA_CSV_ALT = DATA_DIR / "Paula_SUM_LIST.csv"
-COSMETICS_CSV = DATA_DIR / "cosmetics.csv"
-SEPHORA_CSV = DATA_DIR / "Sephora_all_423.csv"  # optional second source
+FINAL_DATA_CSV = DATA_DIR / "final_data.csv"
 REVIEW_STATS_PATH = CACHE_DIR / "review_stats.json"
 
 # effect: good -> +score, avoid -> -score, neutral -> 0. Not in map -> neutral (0).
@@ -737,65 +736,23 @@ def count_active_wrinkle_hits(ingredient_list: list, ingredient_skin_map: dict) 
     return count
 
 
-def _load_cosmetics_only(max_products: int = None):
-    """Load from cosmetics.csv only. Returns list of product dicts."""
-    if not COSMETICS_CSV.exists():
+def load_products_with_ingredients(max_products: int = None, use_sephora: bool = True):
+    """
+    Load products from final_data.csv.
+    Returns list of {id, name, brand, ingredients, rating, raw_ingredients, source, product_url}.
+    """
+    if not FINAL_DATA_CSV.exists():
         return []
     products = []
-    with open(COSMETICS_CSV, encoding="utf-8", newline="") as f:
+    with open(FINAL_DATA_CSV, encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
             if max_products is not None and i >= max_products:
                 break
-            raw_ing = row.get("Ingredients", "")
-            cls = _raw_ingredients_classification(raw_ing)
-            if not cls.get("use_parser"):
-                ingredients = []
-                no_reason = cls.get("reason", "unknown")
-                exclude_rec = True
-            else:
-                ingredients = _parse_ingredients(raw_ing)
-                no_reason = None
-                exclude_rec = False
-                if not ingredients and _looks_like_marketing_only(raw_ing):
-                    no_reason = "no_inci_provided"
-                    exclude_rec = True
-            try:
-                rating = float(row.get("Rating", 0) or 0)
-            except Exception:
-                rating = 0
-            prod_name = row.get("Name", "")
-            prod_label = row.get("Label", "")
-            p = {
-                "id": str(i + 1),
-                "name": prod_name,
-                "brand": row.get("Brand", ""),
-                "ingredients": ingredients,
-                "rating": rating,
-                "raw_ingredients": raw_ing[:200],
-                "source": "cosmetics",
-                "category": categorize(prod_name, "", prod_label),
-            }
-            if no_reason:
-                p["no_ingredients_reason"] = no_reason
-            if exclude_rec:
-                p["exclude_recommendation"] = True
-            products.append(p)
-    return products
-
-
-def _load_sephora_only(max_products: int = None, offset_id: int = 0):
-    """Load from Sephora_all_423.csv only. Same shape as cosmetics; product_url = cosmetic_link."""
-    if not SEPHORA_CSV.exists():
-        return []
-    products = []
-    with open(SEPHORA_CSV, encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        for i, row in enumerate(reader):
-            if max_products is not None and i >= max_products:
-                break
-            raw_ing = row.get("ingredients", "") or ""
-            # Sephora ingredients often have newlines and descriptive text; normalize to one block
+            source = row.get("source", "")
+            if not use_sephora and source == "sephora":
+                continue
+            raw_ing = row.get("ingredients_raw", "") or ""
             raw_ing = " ".join(raw_ing.split())
             cls = _raw_ingredients_classification(raw_ing)
             if not cls.get("use_parser"):
@@ -810,53 +767,33 @@ def _load_sephora_only(max_products: int = None, offset_id: int = 0):
                     no_reason = "no_inci_provided"
                     exclude_rec = True
             try:
-                rating = float(row.get("recommended", 0) or 0)
+                rating = float(row.get("rating", 0) or 0)
             except Exception:
                 rating = 0
-            prod_name = (row.get("cosmetic_name") or "").strip()
-            prod_desc = (row.get("What it is") or "").strip()
+            prod_name = (row.get("name") or "").strip()
             p = {
-                "id": str(offset_id + i + 1),
+                "id": row.get("id") or str(i + 1),
                 "name": prod_name,
-                "brand": (row.get("brand_name") or "").strip(),
+                "brand": (row.get("brand") or "").strip(),
                 "ingredients": ingredients,
                 "rating": rating,
                 "raw_ingredients": raw_ing[:200],
-                "source": "sephora",
-                "product_url": (row.get("cosmetic_link") or "").strip(),
-                "category": categorize(prod_name, prod_desc, ""),
+                "source": source,
+                "product_url": (row.get("product_url") or "").strip(),
+                "category": categorize(prod_name, "", ""),
             }
             if no_reason:
                 p["no_ingredients_reason"] = no_reason
             if exclude_rec:
                 p["exclude_recommendation"] = True
             products.append(p)
-    return products
-
-
-def load_products_with_ingredients(max_products: int = None, use_sephora: bool = True):
-    """
-    Load products from cosmetics.csv and optionally Sephora_all_423.csv.
-    Returns list of {id, name, brand, ingredients, rating, raw_ingredients, source, product_url?}.
-    IDs: cosmetics 1..n, then Sephora n+1..n+m. Set use_sephora=False to load only cosmetics.
-    """
-    cosmetics = _load_cosmetics_only(max_products=None)
-    n_cos = len(cosmetics)
-    if use_sephora and SEPHORA_CSV.exists():
-        cap = None
-        if max_products is not None and max_products > n_cos:
-            cap = max_products - n_cos
-        sephora = _load_sephora_only(max_products=cap, offset_id=n_cos)
-        cosmetics = cosmetics + sephora
     # Drop products that are disclaimer-only, dynamic formula, or non-cosmetic (no real ingredient data)
     _DROP_EMPTY_REASONS = ("no_ingredients_disclaimer", "dynamic_formula", "non_cosmetic_material")
-    cosmetics = [
-        p for p in cosmetics
+    products = [
+        p for p in products
         if (p.get("ingredients") or []) or p.get("no_ingredients_reason") not in _DROP_EMPTY_REASONS
     ]
-    if max_products is not None and len(cosmetics) > max_products:
-        cosmetics = cosmetics[:max_products]
-    return cosmetics
+    return products
 
 
 def get_top_products(
