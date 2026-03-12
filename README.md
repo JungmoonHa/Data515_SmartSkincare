@@ -115,7 +115,7 @@ All cache files are built by scripts in `src/` and read at recommendation time. 
 | `build_vector_cache.py` | Builds KNN ingredient-vector index into `product_knn_topk.json`. |
 | `run_pipeline.py` | Runs the full curation + cache build pipeline in sequence. |
 
-**Curation / preprocessing (used to build `final_data.csv` and `ingredient_skin_map.json`)**
+**Curation / preprocessing (used to build `final_data.csv` and `ingredient_info_combined.csv`)**
 
 | File | Description |
 |------|-------------|
@@ -129,7 +129,7 @@ All cache files are built by scripts in `src/` and read at recommendation time. 
 | `filter_needs_human.py` | Filters the needs-human queue to keep only plausible ingredient tokens. |
 | `export_top_unmatched_for_curation.py` | Exports top 1,000 unmatched ingredients to CSV for manual review. |
 | `fetch_product_images_byHand.py` | Fetches product image URLs via Serper API (legacy, image URLs now in `final_data.csv`). |
-
+| `export_ingredient_info_csv.py`| produce 'ingredient_info_combined.csv' from'ingredient_skin_map.json' and 'ingredient_info_incidecoder.json'|
 
 **Tests / verification**
 
