@@ -1,6 +1,6 @@
 # Examples: Quality of the Example of Using the Package
 
-This folder provides a step-by-step guide and screenshots for using the Smart Skincare recommendation tool, aligned with the "Quality of the example of using the package" criterion. Add your own screenshots as `example_images/example_image_1.jpg` through `example_image_12.jpg` and fill in the sections below.
+This folder provides a step-by-step guide for using the Smart Skincare web app. Add your own screenshots as `example_images/example_image_1.jpg` through `example_image_7.jpg` to match the figures below.
 
 ---
 
@@ -16,83 +16,73 @@ You should see that the tests pass.
 
 ---
 
-## Home Page
+## 1. Home Page
 
-Begin by reading the "Tutorial For Using the Tool" section in the main [README](../README.md) file. Open terminal and get started with the app.
-
----
-
-## [Feature / Tab name – e.g. Skin Type Input]
-
-Navigate to this tab by clicking it. Describe the main actions (e.g. select skin type, optional concerns).
-
-Example: select "Combination" and "Sensitive", then click to get recommendations.
+On the home screen you will see a short introduction to the Smart Skincare web app. To start, click the **"Take the skin test"** button to begin the skin-type survey and get personalized product recommendations.
 
 ![Figure_1](example_images/example_image_1.jpg)
 
-You can also hover on elements to see more details.
+---
+
+## 2. Start the Skin Test — Name and Age
+
+The skin test begins with basic profile fields. Enter your **name** and **age**. These help personalize the experience. Then proceed to the next step to set your skin type.
 
 ![Figure_2](example_images/example_image_2.jpg)
 
 ---
 
-## [Next section – e.g. Recommendation Results]
+## 3. Skin Type (Required)
 
-Describe how to interpret the results. Example: top products list and score explanation.
+Select your **skin type**. You must choose exactly one of:
+
+- **Oily**
+- **Dry**
+- **Combination**
+- **Normal**
+
+This selection is required; the app uses it to score products and filter ingredients that are beneficial or cautionary for your skin type.
 
 ![Figure_3](example_images/example_image_3.jpg)
 
-Single click on a product to see details.
+---
+
+## 4. Intensity and Skin Concerns — Get Recommendations
+
+Next, set the **intensity** for your skin type (required — select one). You can also optionally select any **skin concerns** that apply to you.
+
+When you are done, click **"Get product recommendation"** to see your personalized product list.
 
 ![Figure_4](example_images/example_image_4.jpg)
 
-Double clicking can [describe behavior].
+---
+
+## 5. Top 25 Product Recommendations
+
+The app scores products that match your survey (ingredients and skin type) and shows the **top 25 recommendations**. Each product is listed with a score so you can compare suitability at a glance.
 
 ![Figure_5](example_images/example_image_5.jpg)
 
-If you do not see results, check that your inputs are valid (e.g. skin type selected, product filters within range).
-
 ---
 
-## [Next section – e.g. Ingredient Analysis / Predictor]
+## 6. Understanding Product Scores
 
-Describe inputs (e.g. skin type, product, optional filters). Example: select skin type and optionally product category; click "Get Recommendations".
+Scores differ from product to product. A higher score means the product’s formulation is a better match for your skin type and preferences. Use the scores to quickly spot the best options for you.
 
 ![Figure_6](example_images/example_image_6.jpg)
 
-The tool shows the predicted score and short analysis. Try changing inputs to explore.
+---
 
-**What if I don’t select a required field?**
+## 7. Beneficial and Caution Ingredients
 
-A validation message will appear.
+For each product you can see which ingredients are good or bad for your skin type:
+
+- **Beneficial ingredients** — Click to see which ingredients in that product are considered beneficial for your skin type.
+- **Caution ingredients** — Click to see which ingredients may be less suitable or worth avoiding for your skin type.
+
+This helps you understand why a product scored the way it did and make informed decisions.
 
 ![Figure_7](example_images/example_image_7.jpg)
-
-This applies even if other fields are filled.
-
-![Figure_8](example_images/example_image_8.jpg)
-
-Optional fields (e.g. product category) can be left empty.
-
-![Figure_9](example_images/example_image_9.jpg)
-
-Explore other cases; as long as required fields are set and values are in the allowed range, the tool will return results.
-
-**Input limits**
-
-If a value is out of range (e.g. rating filter > 5), the app will show an error.
-
-![Figure_10](example_images/example_image_10.jpg)
-
-When a multi-select allows at most N options, selecting one more will prompt: "You can only select up to N options. Remove an option first."
-
-![Figure_11](example_images/example_image_11.jpg)
-
-**Search / autocomplete**
-
-You can type in dropdowns to filter options and find items by partial name.
-
-![Figure_12](example_images/example_image_12.jpg)
 
 ---
 
