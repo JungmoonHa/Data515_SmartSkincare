@@ -33,13 +33,13 @@ Then follow the steps below (Home Page → Skin Test → Recommendations) to use
 
 ## Running our Tests
 
-To verify the project works, run the tests. From the project root:
+To verify the project works, run the tests with **pytest**. From the project root:
 
 ```bash
-python src/smart_skincare/test_recommend_mvp.py
+pytest src/smart_skincare/test_recommend_mvp.py -v
 ```
 
-Or run another test file in `src/smart_skincare/` (e.g. `test_ingredient_canonical.py`). You should see that the tests pass.
+Or run all tests: `pytest src/smart_skincare -v`, or another test file (e.g. `pytest src/smart_skincare/test_ingredient_canonical.py -v`). You should see that the tests pass.
 
 ---
 
