@@ -24,7 +24,8 @@ We recommend using a **virtual environment** for consistent setup (see the main 
    python src/smart_skincare/dashboard.py
    ```
 
-4. **Open in browser:** [http://127.0.0.1:5000](http://127.0.0.1:5000)
+4. **Open in browser:** [http://127.0.0.1:5001](http://127.0.0.1:5001)  
+   (We use port **5001** by default so the app runs on Macs where port 5000 is used by AirPlay.)
 
 Then follow the steps below (Home Page → Skin Test → Recommendations) to use the app.
 

@@ -100,7 +100,7 @@ What the recommendation engine actually uses:
    - Or `python scripts/run_recommendation.py --dry --wrinkle --top 10` etc.
 
 4. **Demo dashboard**
-   - `pip install flask` then `python scripts/dashboard.py` → http://127.0.0.1:5000
+   - `pip install flask` then `python src/smart_skincare/dashboard.py` → http://127.0.0.1:5001
    - Select skin concerns (dry/oily/pigmentation/sensitive/wrinkle) and optional age → "Get recommendations" for ingredient-based Top 30 product cards (key ingredients and avoid list). First load may take 20–30s for full pool scoring.
    - **Product images**: Shown from JSON when available; otherwise "No image" placeholder. See "5. Product image URL fetch" below.
 
@@ -142,7 +142,7 @@ smartskincare/
 | Task | Command |
 |-----|--------|
 | **View recommendation results (CLI)** | `python3 scripts/run_recommendation.py --dry --wrinkle --top 10` |
-| **Run recommendation dashboard** | `pip install flask && python3 scripts/dashboard.py` → http://127.0.0.1:5000 |
+| **Run recommendation dashboard** | `pip install flask && python3 src/smart_skincare/dashboard.py` → http://127.0.0.1:5001 |
 | **Rebuild full ingredient_skin_map** | `python3 scripts/run_pipeline.py` |
 | **Rebuild ingredient_skin_map + run recommendations** | `python3 scripts/run_pipeline.py --recommend` |
 | **Refresh review cache** | `python3 scripts/build_review_stats_cache.py` |

@@ -1,13 +1,14 @@
 """
 Demo dashboard: select profile then get ingredient-based product recommendations.
 
-Run from project root: python dashboard.py
-Then open: http://127.0.0.1:5000
+Run from project root: python src/smart_skincare/dashboard.py
+Then open: http://127.0.0.1:5001 (default port 5001; use PORT=5000 if you want 5000)
 
 Product images: loaded from cosmetics_image_urls.json (key: normalized "brand name")
 and sephora_image_urls.json (key: product_url). Populate with fetch_product_images_byHand.py.
 """
 import json
+import os
 from pathlib import Path
 
 from flask import Flask, Response, jsonify, request
@@ -141,4 +142,5 @@ def api_recommend():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=True)
