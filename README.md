@@ -1,6 +1,6 @@
 # Smart Skincare: Personalized Skincare Products Recommendation Tool
 
-[![CI](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml/badge.svg)](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare/graph/badge.svg)](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare)
+[![CI](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare/graph/badge.svg)](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare)
 
 ## Team Members
 - DH Lee
@@ -122,6 +122,32 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
 - **CI** runs on every push and pull request to `main` (see the [CI](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml) workflow).
 - It runs **Ruff** (lint), **pytest** (tests), and **pytest-cov** (code coverage). Coverage is uploaded to **Codecov** when the token is configured; the badge above shows the latest coverage.
+
+### Codecov 설정 방법 (한 번만 하면 됨)
+
+1. **Codecov 가입**
+   - [https://codecov.io](https://codecov.io) 접속 → **Sign in with GitHub** 로 로그인.
+
+2. **저장소 추가**
+   - 로그인 후 **Add new repository** 또는 **Set up a repository** 선택.
+   - 목록에서 **JungmoonHa/Data515_SmartSkincare** 선택 후 **Add** (또는 **Save**).
+
+3. **토큰 복사**
+   - 해당 저장소 페이지로 이동하면 **Repository token** (또는 **Settings → General → Repository token**)에 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 형태의 토큰이 있음.
+   - **Copy** 해서 복사해 두기.
+
+4. **GitHub Secrets에 토큰 넣기**
+   - GitHub에서 [Data515_SmartSkincare](https://github.com/JungmoonHa/Data515_SmartSkincare) 저장소 열기.
+   - **Settings** → **Secrets and variables** → **Actions** 이동.
+   - **New repository secret** 클릭.
+   - **Name:** `CODECOV_TOKEN`  
+   - **Secret:** 3번에서 복사한 토큰 붙여넣기 → **Add secret**.
+
+5. **동작 확인**
+   - `main`에 push 하거나, **Actions** 탭에서 **CI** 워크플로 **Re-run all jobs** 실행.
+   - 한 번 성공하면 Codecov 대시보드에 커버리지가 쌓이고, README의 codecov 뱃지가 갱신됨.
+
+> 퍼블릭 저장소는 Codecov에서 저장소만 추가해도 뱃지가 보일 수 있지만, **CODECOV_TOKEN**을 넣어야 매 push마다 업로드가 성공하고 뱃지 숫자가 정확히 반영됩니다.
 
 ---
 
