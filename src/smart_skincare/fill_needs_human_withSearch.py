@@ -333,7 +333,7 @@ def main():
 
     filled_count = sum(1 for r in rows if (r.get("skin_type") or "").strip() or (r.get("effect") or "").strip())
     print(f"withSearch_filled_v2.csv: {len(rows)} rows (filled: {filled_count})")
-    print(f"Run: python build_ingredient_skin_map.py")
+    print("Run: python build_ingredient_skin_map.py")
 
 
 if __name__ == "__main__":

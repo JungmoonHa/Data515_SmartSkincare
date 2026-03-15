@@ -2,7 +2,7 @@
 Fill skin-type data for product ingredients that are missing from ingredient_skin_map.
 
 Strategies:
-1. Substring propagation: if a missing ingredient contains a known map key (e.g. 
+1. Substring propagation: if a missing ingredient contains a known map key (e.g.
    "sodium hyaluronate crosspolymer" contains "sodium hyaluronate"), use that entry
    with confidence=low.
 2. (Optional) Extend fallback in recommend_mvp for remaining by adding more keywords.
@@ -129,8 +129,8 @@ def load_skin_map() -> dict:
 def get_missing_ingredients(skin_map: dict) -> set:
     """Product ingredients that are not in skin_map and have no fallback."""
     from recommend_mvp import (
-        load_products_with_ingredients,
         fallback_entry_from_family,
+        load_products_with_ingredients,
     )
     products = load_products_with_ingredients(max_products=None)
     products = [p for p in products if not p.get("exclude_recommendation")]

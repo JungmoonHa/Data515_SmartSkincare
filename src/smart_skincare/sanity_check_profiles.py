@@ -12,14 +12,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from recommend_mvp import (
-    user_input_to_profile,
-    get_top_products,
-    top_types,
     TYPE_FAMILY_ALLOW,
     _ingredient_family,
-    score_product_mvp,
+    get_top_products,
     load_ingredient_skin_map,
-    fallback_entry_from_family,
+    score_product_mvp,
+    top_types,
+    user_input_to_profile,
 )
 
 # 10 profiles covering single-type, combos, and edge cases

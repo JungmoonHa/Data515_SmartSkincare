@@ -5,10 +5,10 @@
 - Product score = ingredient x type matching + rating
 """
 import csv
-import re
 import json
-from pathlib import Path
+import re
 from collections import defaultdict
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"

@@ -1,11 +1,9 @@
 """Tests for skin_type_engine.py — skin type mapping & scoring."""
-import pytest
 from skin_type_engine import (
-    _text_matches_types,
-    user_input_to_profile,
-    score_product,
-    normalize_ingredient,
     KEYWORDS_FOR_TYPE,
+    _text_matches_types,
+    score_product,
+    user_input_to_profile,
 )
 
 

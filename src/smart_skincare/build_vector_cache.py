@@ -18,8 +18,8 @@ def main():
     out_path = cache_dir / "product_knn_topk.json"
 
     try:
-        from sklearn.preprocessing import MultiLabelBinarizer
         from sklearn.neighbors import NearestNeighbors
+        from sklearn.preprocessing import MultiLabelBinarizer
     except Exception as e:
         raise SystemExit(
             "ERROR: scikit-learn is required for build_vector_cache.py\n"

@@ -8,9 +8,9 @@ Order: filter_needs_human → apply_curation_rules_v2 → fill_needs_human_withS
 Usage: python run_pipeline.py
        python run_pipeline.py --recommend   # run recommend_mvp at the end
 """
+import argparse
 import subprocess
 import sys
-import argparse
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent

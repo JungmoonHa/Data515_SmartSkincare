@@ -17,7 +17,6 @@ import json
 import os
 import re
 import time
-import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -133,7 +132,6 @@ def _fetch_og_image(url: str) -> tuple[str, str]:
     """Fetch URL, return (og:image URL, error_message)."""
     try:
         import requests
-        from bs4 import BeautifulSoup
     except ImportError:
         return "", "no requests/beautifulsoup4"
     try:
@@ -195,7 +193,7 @@ def main():
             if not img:
                 img = _serper_image_search(query, serper_key)
                 if img and args.verbose:
-                    print(f"      -> image (from image search)")
+                    print("      -> image (from image search)")
             if img:
                 if src == "cosmetics":
                     cos_out[norm_key] = img
@@ -209,7 +207,7 @@ def main():
                     print(f"      -> {img[:60]}...")
             else:
                 if args.verbose:
-                    print(f"      -> no image")
+                    print("      -> no image")
             time.sleep(args.delay)
             if (idx + 1) % 50 == 0:
                 save()

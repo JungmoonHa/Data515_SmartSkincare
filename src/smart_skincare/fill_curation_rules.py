@@ -10,8 +10,8 @@ Then: python build_ingredient_skin_map.py
 """
 import csv
 import re
-from pathlib import Path
 from collections import Counter
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
@@ -213,7 +213,6 @@ def main():
 
     # Rule fill
     filled = []
-    needs_human_list = []
     for ing in sorted_real:
         rule = match_rule(ing)
         if rule:

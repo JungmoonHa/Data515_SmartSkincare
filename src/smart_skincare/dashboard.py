@@ -10,10 +10,10 @@ and sephora_image_urls.json (key: product_url). Populate with fetch_product_imag
 import json
 from pathlib import Path
 
-from flask import Flask, request, jsonify, Response
+from flask import Flask, Response, jsonify, request
 
 # Import from parent so run from project root (cwd = smartskincare)
-from recommend_mvp import user_input_to_profile, get_top_products
+from recommend_mvp import get_top_products, user_input_to_profile
 
 app = Flask(__name__)
 ROOT = Path(__file__).resolve().parent.parent.parent

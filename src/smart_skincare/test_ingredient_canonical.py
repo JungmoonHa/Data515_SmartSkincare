@@ -1,14 +1,12 @@
 """Tests for ingredient_canonical.py — ingredient name normalization."""
-import pytest
 from ingredient_canonical import (
+    add_aliases_from_synonyms,
+    build_initial_aliases_from_paula,
+    canonicalize_ingredient,
     normalize_ingredient,
-    paula_canonicalize,
     normalize_strict,
     normalize_with_abbreviations,
-    canonicalize_ingredient,
-    build_initial_aliases_from_paula,
-    add_aliases_from_synonyms,
-    COMMON_ABBREVIATIONS,
+    paula_canonicalize,
 )
 
 

@@ -2,12 +2,11 @@
 Verify that all products in the recommendation pool get a proper score.
 Reports: total pool, score distribution, how many have score > 0 vs == 0.
 """
-from collections import defaultdict
 
 from recommend_mvp import (
-    load_products_with_ingredients,
     load_ingredient_skin_map,
     load_paula_rating_map,
+    load_products_with_ingredients,
     score_product_mvp,
 )
 
@@ -59,7 +58,7 @@ def run_audit(profile: dict, profile_name: str):
     safe_print(f"  With score > 0: {positive}  |  With score == 0: {zero}")
     safe_print(f"  Score: min={mn:.4f}  max={mx:.4f}  mean={mean:.4f}  p50={p50:.4f}  p90={p90:.4f}")
     if zero_score_products:
-        safe_print(f"  Sample products with score 0 (first 5):")
+        safe_print("  Sample products with score 0 (first 5):")
         for brand, name, n_ing in zero_score_products[:5]:
             safe_print(f"    - [{brand}] {name}  (ingredients: {n_ing})")
 

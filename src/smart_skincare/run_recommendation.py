@@ -6,7 +6,8 @@ Usage:
   python run_recommendation.py --hydration low --oil high --age 40 --top 5
 """
 import argparse
-from recommend_mvp import user_input_to_profile, get_top_products
+
+from recommend_mvp import get_top_products, user_input_to_profile
 
 
 def main():

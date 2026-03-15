@@ -1,23 +1,20 @@
 """Tests for recommend_mvp.py — product scoring & recommendation logic."""
-import math
-import pytest
 from recommend_mvp import (
     _confidence_weight,
-    _saturate,
+    _has_inci_like_pattern,
     _infer_tier,
     _ingredient_family,
-    fallback_entry_from_family,
-    top_types,
-    _normalize,
-    user_input_to_profile,
-    score_product_mvp,
     _is_marketing_no_score_ingredient,
-    _should_drop_ingredient_token,
-    _has_inci_like_pattern,
+    _normalize,
     _raw_ingredients_classification,
-    get_key_ingredients,
+    _saturate,
+    _should_drop_ingredient_token,
     count_active_wrinkle_hits,
-    CONFIDENCE_WEIGHT,
+    fallback_entry_from_family,
+    get_key_ingredients,
+    score_product_mvp,
+    top_types,
+    user_input_to_profile,
 )
 
 

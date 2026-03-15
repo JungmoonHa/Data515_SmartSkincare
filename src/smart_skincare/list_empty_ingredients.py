@@ -4,7 +4,9 @@
 """
 import argparse
 import re
+
 from recommend_mvp import load_products_with_ingredients
+
 
 def safe_print(s):
     try:

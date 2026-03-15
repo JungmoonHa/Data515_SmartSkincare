@@ -8,7 +8,6 @@ STEP 5 — Build ingredient -> 6 types + effect + confidence (ingredient_skin_ma
 import csv
 import json
 from pathlib import Path
-from collections import defaultdict
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"

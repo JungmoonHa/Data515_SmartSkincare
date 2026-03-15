@@ -1,14 +1,13 @@
 """Tests for ingredient_cleaning.py — raw ingredient string cleaning."""
-import pytest
 from ingredient_cleaning import (
-    _remove_percent,
-    _remove_parentheses,
     _normalize_space,
+    _remove_parentheses,
+    _remove_percent,
     clean_one_ingredient,
-    is_junk,
-    split_on_ingredients_label,
-    split_compound,
     clean_raw_ingredient,
+    is_junk,
+    split_compound,
+    split_on_ingredients_label,
 )
 
 

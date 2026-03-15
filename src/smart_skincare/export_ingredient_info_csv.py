@@ -13,7 +13,6 @@ import html
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parent
 SKIN_MAP_PATH = ROOT / "ingredient_skin_map.json"
 INCI_INFO_PATH = ROOT / "ingredient_info_incidecoder.json"

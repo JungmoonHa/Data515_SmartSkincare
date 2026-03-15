@@ -5,11 +5,11 @@ Smart Skincare - Matching pipeline
 3. Remaining ingredients: check Paula linkability via pre_alternatives
 """
 import csv
-import re
 import json
+import re
 import time
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
 
 try:
     import difflib
@@ -17,10 +17,10 @@ except Exception:
     difflib = None
 
 try:
-    import urllib.request
-    import urllib.parse
-    import urllib.error
     import ssl
+    import urllib.error
+    import urllib.parse
+    import urllib.request
     _HAS_URLLIB = True
 except Exception:
     _HAS_URLLIB = False
@@ -37,7 +37,9 @@ try:
     )
 except Exception:
     canonicalize_ingredient = None
-    merge_aliases_from_matching_results = lambda *a, **k: {}
+
+    def merge_aliases_from_matching_results(*a, **k):
+        return {}
 PUBCHEM_COMPOUND_CACHE_PATH = CACHE_DIR / "pubchem_compound_info_cache.json"  # NCBI info for unmatched ingredients
 INCIDECODER_CACHE_PATH = CACHE_DIR / "incidecoder_cache.json"  # https://incidecoder.com/ingredients
 PUBCHEM_DELAY = 0.25  # stay under 5 req/sec (NCBI policy)
@@ -245,7 +247,7 @@ def fetch_pubchem_synonyms(ingredient_name: str, cache: dict) -> list:
                     if infos and "Synonym" in infos[0]:
                         synonyms = infos[0]["Synonym"]
             time.sleep(PUBCHEM_DELAY)
-        except Exception as e:
+        except Exception:
             synonyms = []  # keep empty on error
         cache[key] = synonyms
     return synonyms

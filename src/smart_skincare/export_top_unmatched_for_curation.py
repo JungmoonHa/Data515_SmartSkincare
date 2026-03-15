@@ -17,10 +17,10 @@ TOP_N = 1000
 def main():
     sys.path.insert(0, str(SCRIPTS_DIR))
     from match_pipeline import (
-        load_paula_ingredients,
-        load_alternatives,
         load_all_unmapped_ingredients,
+        load_alternatives,
         load_ingredient_frequency,
+        load_paula_ingredients,
         run_matching,
     )
 

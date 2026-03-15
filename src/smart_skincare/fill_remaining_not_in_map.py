@@ -28,8 +28,8 @@ def _load_current_map_keys() -> set:
 
 
 def main():
-    from recommend_mvp import load_products_with_ingredients
     from fill_needs_human_withSearch import fill_row
+    from recommend_mvp import load_products_with_ingredients
 
     products = load_products_with_ingredients(max_products=None)
     products = [p for p in products if not p.get("exclude_recommendation")]
@@ -63,7 +63,7 @@ def main():
         w.writerows(rows)
 
     print(f"withSearch_filled_remaining.csv: {len(rows)} rows (ingredients in products, not in map)")
-    print(f"Run: python build_ingredient_skin_map.py")
+    print("Run: python build_ingredient_skin_map.py")
 
 
 if __name__ == "__main__":
