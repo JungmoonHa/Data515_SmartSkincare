@@ -137,25 +137,25 @@ smartskincare/
 
 ## 6. Quick command reference
 
-> 모든 명령은 프로젝트 루트(`smartskincare/`)에서 실행.
+> All commands should be run from the project root (`smartskincare/`).
 
-| 하고 싶은 것 | 명령어 |
-|-------------|--------|
-| **추천 결과 보기 (CLI)** | `python3 scripts/run_recommendation.py --dry --wrinkle --top 10` |
-| **추천 대시보드 실행** | `pip install flask && python3 scripts/dashboard.py` → http://127.0.0.1:5000 |
-| **ingredient_skin_map 전체 재빌드** | `python3 scripts/run_pipeline.py` |
-| **ingredient_skin_map 재빌드 + 추천까지** | `python3 scripts/run_pipeline.py --recommend` |
-| **리뷰 캐시 갱신** | `python3 scripts/build_review_stats_cache.py` |
-| **KNN 유사도 캐시 갱신** | `python3 scripts/build_vector_cache.py` (scikit-learn 필요) |
-| **제품 이미지 URL 수집** | `SERPER_API_KEY=xxx python3 scripts/fetch_product_images_byHand.py` |
-| **이미지 누락 현황 확인** | `python3 scripts/count_missing_images.py` |
-| **Paula 매칭 파이프라인 실행** | `python3 scripts/match_pipeline.py` |
-| **매칭 안 된 성분 Top 1000 CSV 추출** | `python3 scripts/export_top_unmatched_for_curation.py` |
-| **manual_curation.csv 규칙 채우기** | `python3 scripts/fill_manual_curation.py` |
-| **빈 성분 제품 확인** | `python3 scripts/list_empty_ingredients.py` |
-| **제품 카테고리 분류** | `python3 scripts/categorize_products.py` |
-| **추천 점수 분포 검증** | `python3 scripts/verify_recommendation_scores.py` |
-| **10개 프로필 sanity check** | `python3 scripts/sanity_check_profiles.py` |
+| Task | Command |
+|-----|--------|
+| **View recommendation results (CLI)** | `python3 scripts/run_recommendation.py --dry --wrinkle --top 10` |
+| **Run recommendation dashboard** | `pip install flask && python3 scripts/dashboard.py` → http://127.0.0.1:5000 |
+| **Rebuild full ingredient_skin_map** | `python3 scripts/run_pipeline.py` |
+| **Rebuild ingredient_skin_map + run recommendations** | `python3 scripts/run_pipeline.py --recommend` |
+| **Refresh review cache** | `python3 scripts/build_review_stats_cache.py` |
+| **Refresh KNN similarity cache** | `python3 scripts/build_vector_cache.py` (requires scikit-learn) |
+| **Fetch product image URLs** | `SERPER_API_KEY=xxx python3 scripts/fetch_product_images_byHand.py` |
+| **Check missing image status** | `python3 scripts/count_missing_images.py` |
+| **Run Paula matching pipeline** | `python3 scripts/match_pipeline.py` |
+| **Export Top 1000 unmatched ingredients CSV** | `python3 scripts/export_top_unmatched_for_curation.py` |
+| **Fill rules in manual_curation.csv** | `python3 scripts/fill_manual_curation.py` |
+| **List products with empty ingredients** | `python3 scripts/list_empty_ingredients.py` |
+| **Classify product categories** | `python3 scripts/categorize_products.py` |
+| **Validate recommendation score distribution** | `python3 scripts/verify_recommendation_scores.py` |
+| **Run sanity check on 10 profiles** | `python3 scripts/sanity_check_profiles.py` |
 
 ### run_recommendation.py 옵션
 
