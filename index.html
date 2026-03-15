@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Skincare - Home</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <div class="nav-left">
+        <a class="nav-link" href="index.html">Home</a>
+      </div>
+
+      <div class="brand-block">
+        <h1 class="brand-title">SMART SKINCARE</h1>
+        <p class="brand-subtitle">Find products that truly match your skin.</p>
+      </div>
+    </header>
+
+    <hr class="divider" />
+
+    <section class="home-cta">
+      <p class="home-cta-text">
+        The skincare market is growing rapidly, with an overwhelming number of products available. 
+        While more choices can be helpful, they often make it difficult for consumers to know which 
+        products are right for their skin. The best way to choose skincare is by understanding product 
+        ingredients and how they match your skin type, but this can be challenging for most people.
+      </p>
+
+      <p class="home-cta-text">
+        Our app simplifies this process. After a short skin type survey, we analyze skincare product 
+        ingredients and recommend up to 30 products that best match the user’s skin type. Users can 
+        then easily explore and purchase them through platforms like Sephora, TikTok Shop, or Amazon.
+      </p>
+
+      <a class="home-cta-btn" href="skintest.html">
+        Take the Skin Test
+      </a>
+    </section>
+
+    <section>
+      <h2 class="section-title">Featured Collections</h2>
+
+      <div class="carousel">
+        <button class="carousel-btn left" id="scrollLeft">‹</button>
+
+        <div class="h-scroll" id="featuredScroll">
+
+          <a class="tile" href="cleanser.html">
+            <div class="tile-media">
+              <img class="tile-img" src="Emily_Image_Icons/Facewash_Homepage.png" alt="">
+            </div>
+          </a>
+
+          <a class="tile" href="lipcare.html">
+            <div class="tile-media">
+              <img class="tile-img" src="Emily_Image_Icons/Lipbalm_Homepage.png" alt="">
+            </div>
+          </a>
+
+          <a class="tile" href="newbrand.html">
+            <div class="tile-media">
+              <img class="tile-img" src="Emily_Image_Icons/NewSkincare_Homepage.png" alt="">
+            </div>
+          </a>
+
+          <a class="tile" href="skintest.html">
+            <div class="tile-media">
+              <img class="tile-img" src="Emily_Image_Icons/Skincare_Homepage.png" alt="">
+            </div>
+          </a>
+
+        </div>
+
+        <button class="carousel-btn right" id="scrollRight">›</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const scroller = document.getElementById("featuredScroll");
+    const leftBtn = document.getElementById("scrollLeft");
+    const rightBtn = document.getElementById("scrollRight");
+
+    function scrollAmount() {
+      return Math.round(scroller.clientWidth * 0.85);
+    }
+
+    leftBtn.addEventListener("click", () => {
+      scroller.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+    });
+
+    rightBtn.addEventListener("click", () => {
+      scroller.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "smart-skincare"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "flask",
+    "scikit-learn",
+    "requests",
+    "beautifulsoup4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

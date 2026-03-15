@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Skincare - Skin Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="skin-test">
+<main class="page">
+
+<header class="topbar">
+<div class="nav-left">
+<a class="nav-link" href="index.html">Home</a>
+</div>
+
+<div class="brand-block">
+<h1 class="brand-title">SMART SKINCARE</h1>
+<p class="brand-subtitle">Find personalized skincare ingredients</p>
+</div>
+</header>
+
+<hr class="divider">
+
+<section>
+
+<div class="skin-test-intro">
+<h2 class="section-title">Skin Test</h2>
+<p class="section-text">
+A skin test helps you understand your skin so you can choose the right products,
+avoid irritation, and see better results.
+</p>
+</div>
+
+<form id="skinForm" action="recommendation.html" method="GET">
+
+<!-- USER INFO -->
+<div class="form-wrap">
+<input class="input" name="firstName" type="text" placeholder="Your name" required>
+<input class="input" name="age" type="number" placeholder="Your age" required>
+</div>
+
+<!-- STEP 1: SKIN TYPE -->
+<section class="panel">
+<h3 class="panel-title">Select Your Skin Type</h3>
+
+<div class="skin-type-grid">
+
+<input class="skin-check" type="radio" id="st-oily" name="skinType" value="Oily" required>
+<label class="skin-card" for="st-oily">
+<img class="skin-img" src="Emily_Image_Icons/Oily_Icon.png" alt="Oily skin">
+<div class="skin-name">Oily</div>
+<div class="skin-desc">Oil-prone</div>
+</label>
+
+<input class="skin-check" type="radio" id="st-normal" name="skinType" value="Normal">
+<label class="skin-card" for="st-normal">
+<img class="skin-img" src="Emily_Image_Icons/Normal_Icon.png" alt="Normal skin">
+<div class="skin-name">Normal</div>
+<div class="skin-desc">Balanced</div>
+</label>
+
+<input class="skin-check" type="radio" id="st-combo" name="skinType" value="Combination">
+<label class="skin-card" for="st-combo">
+<img class="skin-img" src="Emily_Image_Icons/Combo_Icon.png" alt="Combination skin">
+<div class="skin-name">Combination</div>
+<div class="skin-desc">Mixed</div>
+</label>
+
+<input class="skin-check" type="radio" id="st-dry" name="skinType" value="Dry">
+<label class="skin-card" for="st-dry">
+<img class="skin-img" src="Emily_Image_Icons/Dry_Icon.png" alt="Dry skin">
+<div class="skin-name">Dry</div>
+<div class="skin-desc">Parched</div>
+</label>
+
+</div>
+</section>
+
+<!-- STEP 2: INTENSITY -->
+<section class="panel intensity-panel" id="intensityPanel">
+<h3 class="panel-title">Select Intensity</h3>
+
+<div class="intensity-grid">
+
+<input type="radio" name="intensity" id="int-low" value="Low" hidden>
+<label class="intensity-card" for="int-low">
+<div class="icon">🌱</div>
+<div class="title"><strong>Low</strong></div>
+<div class="subtitle">Gentle</div>
+</label>
+
+<input type="radio" name="intensity" id="int-medium" value="Medium" hidden>
+<label class="intensity-card" for="int-medium">
+<div class="icon">🌿</div>
+<div class="title"><strong>Medium</strong></div>
+<div class="subtitle">Moderate</div>
+</label>
+
+<input type="radio" name="intensity" id="int-high" value="High" hidden>
+<label class="intensity-card" for="int-high">
+<div class="icon">🔥</div>
+<div class="title"><strong>High</strong></div>
+<div class="subtitle">Strong</div>
+</label>
+
+</div>
+</section>
+
+<!-- STEP 3: SKIN CONCERNS -->
+<section class="panel" id="concernsPanel">
+<h3 class="panel-title">Select Skin Concerns</h3>
+
+<div class="concern-buttons">
+<button type="button" class="chip" data-concern="Pigmentation">Pigmentation</button>
+<button type="button" class="chip" data-concern="Sensitivity">Sensitivity</button>
+<button type="button" class="chip" data-concern="Wrinkles">Wrinkles</button>
+</div>
+
+<input type="hidden" name="concerns" id="concernsValue">
+
+</section>
+
+<button class="submit" type="submit">
+Get Product Recommendations
+</button>
+
+</form>
+</section>
+
+</main>
+
+<script>
+
+const form=document.getElementById("skinForm");
+const intensityPanel=document.getElementById("intensityPanel");
+const concernsPanel=document.getElementById("concernsPanel");
+const chips=document.querySelectorAll(".chip");
+const concernsValue=document.getElementById("concernsValue");
+
+/* Hide steps until skin type selected */
+intensityPanel.style.display="none";
+concernsPanel.style.display="none";
+
+form.addEventListener("change",(e)=>{
+if(e.target.name==="skinType"){
+intensityPanel.style.display="block";
+concernsPanel.style.display="block";
+}
+});
+
+/* Handle clickable concern buttons */
+chips.forEach(chip=>{
+chip.addEventListener("click",()=>{
+chip.classList.toggle("selected");
+
+const selectedConcerns=Array.from(chips)
+.filter(c=>c.classList.contains("selected"))
+.map(c=>c.dataset.concern);
+
+concernsValue.value=selectedConcerns.join(",");
+});
+});
+
+</script>
+
+</body>
+</html>
