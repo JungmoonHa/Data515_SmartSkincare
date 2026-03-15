@@ -1,5 +1,7 @@
 # Smart Skincare: Personalized Skincare Products Recommendation Tool
 
+[![CI](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml/badge.svg)](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare/graph/badge.svg)](https://codecov.io/gh/JungmoonHa/Data515_SmartSkincare)
+
 ## Team Members
 - DH Lee
 - Emily Tran
@@ -33,6 +35,93 @@ Planned Outputs:
 - **Skincare Product Reviews Dataset**
   2,000+ products with user reviews and ratings providing real-world feedback on product performance
   https://www.kaggle.com/code/natashamessier/sephora-data-analysis/input
+
+---
+
+## Setting up the virtual environment
+
+We use a **virtual environment** so everyone can install the same dependencies and run tests/lint the same way (easy collaboration).
+
+### 1. Clone and enter the project
+
+```bash
+git clone https://github.com/JungmoonHa/Data515_SmartSkincare.git
+cd Data515_SmartSkincare
+```
+
+### 2. Create and activate a virtual environment
+
+**On macOS/Linux:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+**On Windows (Command Prompt):**
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+```
+
+**On Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+### 3. Install the project and dev dependencies
+
+From the project root (where `pyproject.toml` is):
+
+```bash
+pip install --upgrade pip
+pip install -e ".[dev]"
+```
+
+Alternatively, use the requirements files:
+
+```bash
+pip install -r requirements-dev.txt
+pip install -e .
+```
+
+### 4. Run tests
+
+```bash
+pytest src/smart_skincare -v
+```
+
+Or with coverage:
+
+```bash
+pytest src/smart_skincare --cov=src/smart_skincare --cov-report=term-missing
+```
+
+(Use `PYTHONPATH=src/smart_skincare` if you run from the project root and tests fail to import.)
+
+### 5. Lint
+
+```bash
+ruff check src/smart_skincare
+```
+
+### 6. Run the web app
+
+```bash
+python src/smart_skincare/dashboard.py
+```
+
+Then open [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+---
+
+## Continuous integration
+
+- **CI** runs on every push and pull request to `main` (see the [CI](https://github.com/JungmoonHa/Data515_SmartSkincare/actions/workflows/ci.yml) workflow).
+- It runs **Ruff** (lint), **pytest** (tests), and **pytest-cov** (code coverage). Coverage is uploaded to **Codecov** when the token is configured; the badge above shows the latest coverage.
 
 ---
 

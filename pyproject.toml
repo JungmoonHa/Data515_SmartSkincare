@@ -1,17 +1,70 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "smart-skincare"
 version = "0.1.0"
+description = "Personalized skincare product recommendation tool based on skin type and ingredients."
+readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "flask",
-    "scikit-learn",
-    "requests",
-    "beautifulsoup4",
+license = { text = "MIT" }
+authors = [
+    { name = "Smart Skincare Team" }
 ]
+keywords = ["skincare", "recommendation", "cosmetics", "ingredients"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "flask>=2.0.0",
+    "scikit-learn>=1.0.0",
+    "requests>=2.28.0",
+    "beautifulsoup4>=4.11.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Repository = "https://github.com/JungmoonHa/Data515_SmartSkincare"
+Homepage = "https://github.com/JungmoonHa/Data515_SmartSkincare"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["src/smart_skincare"]
+pythonpath = ["src/smart_skincare"]
+addopts = "-v --tb=short"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["src/smart_skincare"]
+branch = false
+omit = ["*/test_*.py", "*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
