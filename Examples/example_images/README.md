@@ -1,13 +1,11 @@
 # Example images
 
-Place the following image files in this folder to match the figures in the main Examples guide:
-
 | File | Section |
 |------|---------|
-| `example_image_1.jpg` | Figure_1 — Home page, "Take the skin test" |
-| `example_image_2.jpg` | Figure_2 — Name and age (skin test start) |
-| `example_image_3.jpg` | Figure_3 — Skin type selection (required) |
-| `example_image_4.jpg` | Figure_4 — Intensity, skin concerns, "Get product recommendation" |
-| `example_image_5.jpg` | Figure_5 — Top 25 product recommendations |
-| `example_image_6.jpg` | Figure_6 — Product scores (scores differ per product) |
-| `example_image_7.jpg` | Figure_7 — Beneficial ingredients / Caution ingredients |
+| `Example_Image_1.png` | Figure_1 — Home page, "Take the skin test" |
+| `Example_Image_2.png` | Figure_2 — Name and age (skin test start) |
+| `Example_Image_3.png` | Figure_3 — Skin type selection (required) |
+| `Example_Image_4.png` | Figure_4 — Intensity, skin concerns, "Get product recommendation" |
+| `Example_Image_5.png` | Figure_5 — Top 25 product recommendations |
+| `Example_Image_6.png` | Figure_6 — Product scores (scores differ per product) |
+| `Example_Image_7.png` | Figure_7 — Beneficial ingredients / Caution ingredients |
