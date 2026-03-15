@@ -157,22 +157,22 @@ smartskincare/
 | **Validate recommendation score distribution** | `python3 scripts/verify_recommendation_scores.py` |
 | **Run sanity check on 10 profiles** | `python3 scripts/sanity_check_profiles.py` |
 
-### run_recommendation.py 옵션
+### run_recommendation.py Option
 
 ```
---hydration low/normal/high    수분 레벨
---oil low/normal/high          유분 레벨
---sensitivity low/normal/high  민감도
---age 40                       나이 (35+ → wrinkle 가중)
---dry                          건성 고민
---oily                         지성 고민
---wrinkle                      주름 고민
---pigmentation                 색소침착 고민
---top 10                       상위 N개 (기본 10)
---max-products 500             스코어링 대상 제한 (테스트용)
+--hydration low/normal/high    Hydration level
+--oil low/normal/high          Oil level
+--sensitivity low/normal/high  Sensitivity level
+--age 40                       Age (35+ → wrinkle weight applied)
+--dry                          Dry skin concern
+--oily                         Oily skin concern
+--wrinkle                      Wrinkle concern
+--pigmentation                 Pigmentation concern
+--top 10                       Top N results (default: 10)
+--max-products 500             Limit number of products scored (for testing)
 ```
 
-**예시:**
+**Examples:**
 ```bash
 python scripts/run_recommendation.py --dry --wrinkle --top 5
 python scripts/run_recommendation.py --oily --sensitivity high --age 30 --top 20
