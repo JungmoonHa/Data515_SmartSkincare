@@ -107,3 +107,4 @@ pytest src/smart_skincare -v
 
 ## Video Demonstration
 
+Access the demo here for a detailed understanding of the flow of our project. [Video Download](docs/Demo_Recording.mov)

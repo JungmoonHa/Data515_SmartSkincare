@@ -5,11 +5,12 @@ STEP 6 — MVP recommendation: score products, Top 10, 3 key ingredients.
 - Return top N products + why (top 3 contributing ingredients)
 """
 import csv
+import json
 import math
 import re
-import json
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
+
 from categorize_products import categorize
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -140,7 +141,6 @@ def _raw_ingredients_classification(raw: str) -> dict:
     if not raw or not isinstance(raw, str):
         return {"use_parser": True}
     low = raw.strip().lower()
-    comma_count = raw.count(",")
     for phrase in DYNAMIC_FORMULA_PHRASES:
         if phrase in low:
             return {"use_parser": False, "reason": "dynamic_formula"}
@@ -994,9 +994,9 @@ def _print_top(profile_label: str, profile: dict, top: list, n_show: int = 5):
             parts = [f"{ing} ({why})" for ing, why in avoid]
             print(f"      Avoid / Watch: {', '.join(parts)}")
         else:
-            print(f"      Avoid / Watch: Avoid ingredients not found")
+            print("      Avoid / Watch: Avoid ingredients not found")
 
-#Emily Added 
+#Emily Added
 if __name__ == "__main__":
 
     profile = user_input_to_profile()
