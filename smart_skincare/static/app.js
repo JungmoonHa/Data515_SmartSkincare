@@ -32,15 +32,18 @@ updateProfileSummary();
 
 /* Load dataset */
 async function loadProducts(){
+try {
 const response = await fetch("../../data/recommendations.csv");
+if (!response.ok) {
+console.warn("recommendations.csv not found (run recommendation script locally to generate)");
+return [];
+}
 const csv = await response.text();
-
 const parsed = Papa.parse(csv,{
 header:true,
 skipEmptyLines:true
 });
-
-const products = parsed.data.map(row => ({
+const products = (parsed.data || []).map(row => ({
 brand: row["brand"],
 name: row["name"],
 score: parseFloat(row["score"]) || 0,
@@ -50,8 +53,11 @@ ingredients: row["ingredients_parsed"],
 image: row["image_url"],
 category: row["category"]
 }));
-
 return products;
+} catch (e) {
+console.warn("Could not load recommendations.csv:", e);
+return [];
+}
 }
 
 /* Filter by category */
@@ -109,7 +115,10 @@ const pagination = document.getElementById("pagination");
 grid.innerHTML = "";
 topProduct.innerHTML = "";
 
-if(products.length === 0) return;
+if(products.length === 0) {
+grid.innerHTML = "<p class=\"empty-message\">No recommendation data yet. Run the recommendation script locally to generate <code>data/recommendations.csv</code>, then commit and redeploy.</p>";
+return;
+}
 
 const start = (currentPage - 1) * productsPerPage;
 const end = start + productsPerPage;

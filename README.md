@@ -20,6 +20,7 @@ Interactive Data Analysis & Recommendation Tool
 - [Software Dependencies and License Information](#software-dependencies-and-license-information)
 - [Directory Summary](#directory-summary)
 - [Tutorial For Using the Tool](#tutorial-for-using-the-tool)
+- [Deploy on GitHub Pages](#deploy-on-github-pages)
 
 ## Key Features
 
@@ -104,6 +105,39 @@ Then run:
 ```bash
 pytest src/smart_skincare -v
 ```
+
+## Deploy on GitHub Pages
+
+You can host the web app for free on **GitHub Pages** so anyone can use it from the browser.
+
+### 1. Enable GitHub Pages
+
+1. Open your repo on GitHub: `https://github.com/JungmoonHa/Data515_SmartSkincare`
+2. Go to **Settings** → **Pages**
+3. Under **Build and deployment** → **Source**, choose **Deploy from a branch**
+4. Under **Branch**, select `main` and folder **/ (root)**, then **Save**
+
+### 2. Open the deployed site
+
+After a minute or two, the site will be available at:
+
+**`https://JungmoonHa.github.io/Data515_SmartSkincare/`**
+
+The root URL redirects to the app. You can also open the app directly:
+
+**`https://JungmoonHa.github.io/Data515_SmartSkincare/smart_skincare/templates/index.html`**
+
+### 3. (Optional) Generate full recommendation data
+
+The repo includes a minimal `data/recommendations.csv` (header only) so the recommendation page loads. To show real product recommendations on the deployed site:
+
+1. Clone the repo, install dependencies, and ensure cache files exist under `smart_skincare/cache/`.
+2. From the project root, run:
+   ```bash
+   PYTHONPATH=smart_skincare/src python smart_skincare/src/recommend_mvp.py
+   ```
+   This writes `data/recommendations.csv`.
+3. Commit the updated `data/recommendations.csv` and push. The next Pages deploy will show the full recommendations.
 
 ## Video Demonstration
 
