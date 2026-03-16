@@ -4,42 +4,11 @@ This folder provides a step-by-step guide for using the Smart Skincare web app. 
 
 ---
 
-## Running the app from GitHub
+## Running the app
 
-We recommend using a **virtual environment** for consistent setup (see the main [README](../README.md) section "Setting up the virtual environment"). Then:
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/JungmoonHa/Data515_SmartSkincare.git
-   cd Data515_SmartSkincare
-   ```
-
-2. **Install dependencies** (e.g. Flask)
-   ```bash
-   pip install flask
-   ```
-
-3. **Run the dashboard** from the project root
-   ```bash
-   python src/smart_skincare/dashboard.py
-   ```
-
-4. **Open in browser:** [http://127.0.0.1:5001](http://127.0.0.1:5001)  
-   (We use port **5001** by default so the app runs on Macs where port 5000 is used by AirPlay.)
+**Use the app in your browser (no install):** [https://jungmoonha.github.io/Data515_SmartSkincare/smart_skincare/templates/index.html](https://jungmoonha.github.io/Data515_SmartSkincare/smart_skincare/templates/index.html)
 
 Then follow the steps below (Home Page → Skin Test → Recommendations) to use the app.
-
----
-
-## Running our Tests
-
-To verify the project works, run the tests with **pytest**. From the project root:
-
-```bash
-pytest src/smart_skincare/test_recommend_mvp.py -v
-```
-
-Or run all tests: `pytest src/smart_skincare -v`, or another test file (e.g. `pytest src/smart_skincare/test_ingredient_canonical.py -v`). You should see that the tests pass.
 
 ---
 
