@@ -60,17 +60,18 @@ The project is built using Python 3.10+. The frontend is a static web app (HTML/
 
 ```
 .
-├── cache/                  # Prebuilt JSON caches (ingredient maps, KNN index, review stats)
-├── Datasets/               # Raw and processed product/ingredient data
-├── docs/                   # Project documents and notebooks
-│   └── technology_review/
+├── data/                        # Raw and processed product/ingredient data
+├── docs/                        # Project documents and notebooks
 ├── Examples/
-│   └── example_images/     # Example screenshots of the tool
-├── src/
-│   └── smart_skincare/     # All source code (recommendation engine, pipeline, tests)
-├── static/                 # Frontend assets (JS, CSS, icons)
-│   └── Emily_Image_Icons/
-└── templates/              # HTML pages (index, skin test, recommendations)
+│   └── example_images/          # Example screenshots of the tool
+└── smart_skincare/
+    ├── cache/                   # Prebuilt JSON caches (ingredient maps, KNN index, review stats)
+    ├── scripts/                 # Preprocessing and pipeline scripts (one-time use)
+    ├── src/                     # Core source code (recommendation engine)
+    ├── static/                  # Frontend assets (JS, CSS, icons)
+    │   └── Emily_Image_Icons/
+    ├── templates/               # HTML pages (index, skin test, recommendations)
+    └── tests/                   # Unit tests
 ```
 
 ## Tutorial For Using the Tool
@@ -88,7 +89,7 @@ cd Data515_SmartSkincare
 python3 -m http.server 8000
 ```
 
-Then open [http://localhost:8000/templates/index.html](http://localhost:8000/templates/index.html) in your browser.
+Then open [http://localhost:8000/smart_skincare/templates/index.html](http://localhost:8000/smart_skincare/templates/index.html) in your browser.
 
 ### Step 3: (Optional) Run Tests
 

@@ -40,16 +40,16 @@ Repository = "https://github.com/JungmoonHa/Data515_SmartSkincare"
 Homepage = "https://github.com/JungmoonHa/Data515_SmartSkincare"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["smart_skincare"]
 
 [tool.pytest.ini_options]
-testpaths = ["src/smart_skincare"]
-pythonpath = ["src/smart_skincare"]
+testpaths = ["smart_skincare/tests"]
+pythonpath = ["smart_skincare/src"]
 addopts = "-v --tb=short"
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
-source = ["src/smart_skincare"]
+source = ["smart_skincare/src"]
 branch = false
 omit = ["*/test_*.py", "*/tests/*"]
 

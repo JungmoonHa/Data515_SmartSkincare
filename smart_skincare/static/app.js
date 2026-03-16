@@ -32,7 +32,7 @@ updateProfileSummary();
 
 /* Load dataset */
 async function loadProducts(){
-const response = await fetch("../Datasets/recommendations.csv");
+const response = await fetch("../../data/recommendations.csv");
 const csv = await response.text();
 
 const parsed = Papa.parse(csv,{
