@@ -8,8 +8,9 @@ maps to Eye Care (not Moisturizer), "Exfoliating Toner" maps to Exfoliator, etc.
 Usage: python categorize_products.py
 """
 import csv
-from collections import Counter
+import re
 from pathlib import Path
+from collections import Counter
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = ROOT / "Datasets"
@@ -154,7 +155,7 @@ def main():
     # Other examples (for tuning)
     others = [p for p in products if p["category"] == "Other"]
     if others:
-        print("\n── 'Other' sample (up to 20) ──")
+        print(f"\n── 'Other' sample (up to 20) ──")
         for p in others[:20]:
             print(f"  [{p['source'][:4]}] {p['brand']} — {p['name']}")
 

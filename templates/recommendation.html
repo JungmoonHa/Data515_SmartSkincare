@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Skincare - Recommendations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css"/>
+</head>
+
+<body class="recommendations-page">
+<main class="page">
+
+<!-- Header -->
+<header class="topbar">
+<div class="nav-left">
+<button class="nav-link" type="button" onclick="history.back()">← Back</button>
+<a class="nav-link" href="index.html">Home</a>
+</div>
+
+<div class="brand-block">
+<h1 class="brand-title">SMART SKINCARE</h1>
+<p class="brand-subtitle">Find products that truly match your skin.</p>
+</div>
+</header>
+
+<hr class="divider"/>
+
+<!-- Users Profile -->
+<section class="panel">
+<h3 class="panel-title">Your Profile</h3>
+<p id="profileSummary" class="profile-summary"></p>
+</section>
+
+<!-- Filter by Category -->
+<select id="categoryFilter">
+<option value="all">All Products</option>
+<option value="Moisturizer">Moisturizer</option>
+<option value="Cleanser">Cleanser</option>
+<option value="Serum">Serum</option>
+<option value="Toner">Toner</option>
+<option value="Sunscreen">Sunscreen</option>
+<option value="Eye Care">Eye Care</option>
+<option value="Lip Care">Lip Care</option>
+</select>
+
+<!-- Top Match Product -->
+<section class="panel">
+<h3 class="panel-title">⭐ Your Top Match</h3>
+<div id="topProduct"></div>
+</section>
+
+<!-- Recommendation Product Grid -->
+<section class="panel">
+<h3 class="panel-title">Recommended Products</h3>
+<section class="recommendations-grid"></section>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="/static/app.js"></script>
+
+</body>
+</html>

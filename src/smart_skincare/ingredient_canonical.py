@@ -2,8 +2,8 @@
 Ingredient name normalization (same ingredient, different spellings -> single canonical form).
 - Normalization + synonym table to reduce manufacturer/region/INCI/parentheses/abbrev/spacing/typo differences.
 """
-import json
 import re
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
